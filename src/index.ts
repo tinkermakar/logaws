@@ -44,45 +44,45 @@ export class LogAws {
     return levelName;
   }
 
-  #log(logMethod: LogMethods, level: string, message: string, detail?: LogDetail) {
+  #log(logMethod: LogMethods, lvl: string, msg: string, detail?: LogDetail) {
     // eslint-disable-next-line no-console
     const logFn = console[logMethod];
 
     if (detail) {
-      const withDetail = { level, message, detail };
+      const withDetail = { lvl, msg, detail };
       try {
         logFn(
           this.#isAws ? JSON.stringify(withDetail) : util.inspect(withDetail, this.#inspectOptions),
         );
       } catch (err) {
         console.error(err);
-        console.error(level, message, detail);
+        console.error(lvl, msg, detail);
       }
-    } else logFn(`${level}: ${message}`);
+    } else logFn(`${lvl}: ${msg}`);
   }
 
-  error(message: string, detail?: LogDetail) {
-    const level = this.#addLevelEmoji('error');
-    this.#log(LogMethods.error, level, message, detail);
+  error(msg: string, detail?: LogDetail) {
+    const lvl = this.#addLevelEmoji('error');
+    this.#log(LogMethods.error, lvl, msg, detail);
   }
 
-  problem(message: string, detail?: LogDetail) {
-    const level = this.#addLevelEmoji('problem');
-    this.#log(LogMethods.warn, level, message, detail);
+  problem(msg: string, detail?: LogDetail) {
+    const lvl = this.#addLevelEmoji('problem');
+    this.#log(LogMethods.warn, lvl, msg, detail);
   }
 
-  warn(message: string, detail?: LogDetail) {
-    const level = this.#addLevelEmoji('warn');
-    this.#log(LogMethods.warn, level, message, detail);
+  warn(msg: string, detail?: LogDetail) {
+    const lvl = this.#addLevelEmoji('warn');
+    this.#log(LogMethods.warn, lvl, msg, detail);
   }
 
-  info(message: string, detail?: LogDetail) {
-    const level = this.#addLevelEmoji('info');
-    this.#log(LogMethods.info, level, message, detail);
+  info(msg: string, detail?: LogDetail) {
+    const lvl = this.#addLevelEmoji('info');
+    this.#log(LogMethods.info, lvl, msg, detail);
   }
 
-  debug(message: string, detail?: LogDetail) {
-    const level = this.#addLevelEmoji('debug');
-    if (this.#isDebugMode) this.#log(LogMethods.info, level, message, detail);
+  debug(msg: string, detail?: LogDetail) {
+    const lvl = this.#addLevelEmoji('debug');
+    if (this.#isDebugMode) this.#log(LogMethods.info, lvl, msg, detail);
   }
 }
