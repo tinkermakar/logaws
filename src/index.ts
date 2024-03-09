@@ -1,7 +1,7 @@
 import util from 'node:util';
-import { Color, LogDetail, LogMethods } from './types';
+import { Color, LogContent, LogDetail, LogMethods } from './types';
 
-export class LogAws {
+export class Loggnog {
   #isAws;
   #isDebugMode;
   #inspectOptions;
@@ -44,16 +44,22 @@ export class LogAws {
     return levelName;
   }
 
+  #finalizeLogContent(logDetailRaw: LogContent) {
+    if (this.#isAws) {
+      if (logDetailRaw instanceof Error) return logDetailRaw;
+      return JSON.stringify(logDetailRaw);
+    }
+    return util.inspect(logDetailRaw, this.#inspectOptions);
+  }
+
   #log(logMethod: LogMethods, lvl: string, msg: string, detail?: LogDetail) {
     // eslint-disable-next-line no-console
     const logFn = console[logMethod];
 
     if (detail) {
-      const withDetail = { lvl, msg, detail };
+      const logDetailRaw = { lvl, msg, detail };
       try {
-        logFn(
-          this.#isAws ? JSON.stringify(withDetail) : util.inspect(withDetail, this.#inspectOptions),
-        );
+        logFn(this.#finalizeLogContent(logDetailRaw));
       } catch (err) {
         console.error(err);
         console.error(lvl, msg, detail);
