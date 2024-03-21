@@ -46,8 +46,17 @@ export class Loggnog {
 
   #finalizeLogContent(logDetailRaw: LogContent) {
     if (this.#isAws) {
-      if (logDetailRaw instanceof Error) return logDetailRaw;
-      return JSON.stringify(logDetailRaw);
+      const extraFields =
+        logDetailRaw.detail instanceof Error
+          ? [
+              ...new Set([
+                ...Object.getOwnPropertyNames(logDetailRaw),
+                ...Object.getOwnPropertyNames(logDetailRaw.detail),
+              ]),
+            ]
+          : undefined;
+
+      return JSON.stringify(logDetailRaw, extraFields);
     }
     return util.inspect(logDetailRaw, this.#inspectOptions);
   }
