@@ -1,6 +1,6 @@
 {
   "name": "loggnog",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "An opinionated, lightweight logger for AWS-hosted TypeScript apps",
   "repository": {
     "type": "git",
