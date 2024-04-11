@@ -2,16 +2,16 @@ import util from 'node:util';
 import { Color, LogContent, LogDetail, LogMethods } from './types';
 
 export class Loggnog {
-  #isAws;
-  #isDebugMode;
+  #isAws = false;
+  #isDebugMode = false;
   #inspectOptions;
 
-  constructor({ isAws, isDebugMode }: { isAws: boolean; isDebugMode: boolean }) {
-    this.#isAws = isAws;
-    this.#isDebugMode = isDebugMode;
+  constructor({ isAws, isDebugMode }: { isAws?: boolean; isDebugMode?: boolean }) {
+    if (isAws) this.#isAws = true;
+    if (isDebugMode) this.#isDebugMode = true;
     this.#inspectOptions = {
       depth: Infinity,
-      ...(isAws
+      ...(this.#isAws
         ? { breakLength: Infinity }
         : {
             colors: true,
