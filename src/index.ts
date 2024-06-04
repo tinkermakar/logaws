@@ -1,3 +1,4 @@
+import stringify from 'json-stringify-safe';
 import util from 'node:util';
 import { Color, LogContent, LogDetail, LogMethods } from './types';
 
@@ -46,17 +47,17 @@ export class Loggnog {
 
   #finalizeLogContent(logDetailRaw: LogContent) {
     if (this.#isAws) {
-      const extraFields =
-        logDetailRaw.detail instanceof Error
-          ? [
-              ...new Set([
-                ...Object.getOwnPropertyNames(logDetailRaw),
-                ...Object.getOwnPropertyNames(logDetailRaw.detail),
-              ]),
-            ]
-          : undefined;
+      if (logDetailRaw.detail instanceof Error) {
+        const extraFields = [
+          ...new Set([
+            ...Object.getOwnPropertyNames(logDetailRaw),
+            ...Object.getOwnPropertyNames(logDetailRaw.detail),
+          ]),
+        ];
+        return JSON.stringify(logDetailRaw, extraFields);
+      }
 
-      return JSON.stringify(logDetailRaw, extraFields);
+      return stringify(logDetailRaw);
     }
     return util.inspect(logDetailRaw, this.#inspectOptions);
   }

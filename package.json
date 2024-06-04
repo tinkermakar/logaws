@@ -1,6 +1,6 @@
 {
   "name": "loggnog",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "An opinionated, lightweight logger for AWS-hosted TypeScript apps",
   "repository": {
     "type": "git",
@@ -33,6 +33,7 @@
   "author": "tinkermakar",
   "license": "LGPL-2.1",
   "devDependencies": {
+    "@types/json-stringify-safe": "^5.0.3",
     "@types/node": "^20.10.4",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",
@@ -49,5 +50,8 @@
   "pre-commit": [
     "prettier",
     "lint"
-  ]
+  ],
+  "dependencies": {
+    "json-stringify-safe": "^5.0.1"
+  }
 }
